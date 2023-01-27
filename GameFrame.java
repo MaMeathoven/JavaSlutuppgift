@@ -2,8 +2,8 @@ import javax.swing.JFrame;
 
 public class GameFrame extends JFrame {
     
-    GameFrame(){
 
+    GameFrame(){
         //Skapar en instans av "GamePanel"
         this.add(new GamePanel());
 
