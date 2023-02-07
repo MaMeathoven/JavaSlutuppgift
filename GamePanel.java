@@ -7,7 +7,7 @@ import java.util.Random;
 public class GamePanel extends JPanel implements ActionListener {
     // Skärmhöjd och bredd - standard 600 varje
     static final int SCREEN_WIDTH = 600;
-    static final int SCREEN_HEIGHT = 600;
+    static final int SCREEN_HEIGHT = 600; 
 
     // Storlek på rutor samt utrräkning på hur många
     static final int UNIT_SIZE = 25; // standard 25
@@ -20,6 +20,7 @@ public class GamePanel extends JPanel implements ActionListener {
     // Arrayer som håller alla kordinater på spelplanen
     final int x[] = new int[GAME_UNITS];
     final int y[] = new int[GAME_UNITS];
+    final String d[] = new String[GAME_UNITS];
 
     // Startlängd på snake
     int startingBodyParts = 6;
@@ -40,7 +41,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     String scoreString;
 
-    Timer timer=new Timer(DELAY, this);
+    Timer timer = new Timer(DELAY, this);
     Random random;
 
 
@@ -51,7 +52,7 @@ public class GamePanel extends JPanel implements ActionListener {
         // TODO - IMPLEMENTERA EN FUNKTION FÖR ATT KONTINUERLIGT BYTA FÄRG PÅ BAKGRUND
         this.setBackground(Color.black); // standard Color.black
         this.setFocusable(true);
-        this.addKeyListener(new MyKeyAdapter());
+        this.addKeyListener(new MyKeyAdapter()); 
 
         startGame();
     }
@@ -60,7 +61,6 @@ public class GamePanel extends JPanel implements ActionListener {
         bodyParts = startingBodyParts;
         applesEaten = 0;
         newApple();
-
         running = true;
         timer.start();
     }
@@ -95,9 +95,68 @@ public class GamePanel extends JPanel implements ActionListener {
 
                 // resten av kroppen - standard new Color(45, 100, 0)
                 else {
+                      /* 
                     g.setColor(new Color(45, 100, 0));
                     g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
                             UNIT_SIZE - (2 * UNIT_REDUCTION));
+
+                    //DEBUGGER - skriver ut alla directions
+                    g.drawString(d[i], x[i], y[i]);
+                    */
+                    switch(d[i]){
+                        case "U":
+                        if(d[i-1] == "U"){
+                            g.setColor(new Color(45, 100, 0));
+                            g.fillRect(x[i] + UNIT_REDUCTION, y[i], UNIT_SIZE - (2 * UNIT_REDUCTION),
+                                    UNIT_SIZE);
+                            }
+                            else{
+                                g.setColor(new Color(45, 100, 0));
+                                g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
+                                        UNIT_SIZE - (2 * UNIT_REDUCTION));
+                            }
+                            break;
+
+                        // TODO-fixa denna också på samma sätt som dom andra.
+                        case "D":
+                        if(d[i-1] == "D"){
+                            g.setColor(new Color(45, 100, 0));
+                            g.fillRect(x[i], y[i] + UNIT_REDUCTION, UNIT_SIZE,
+                                    UNIT_SIZE - (2 * UNIT_REDUCTION));
+                            }
+                            else{
+                                g.setColor(new Color(45, 100, 0));
+                                g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
+                                        UNIT_SIZE - (2 * UNIT_REDUCTION));
+                            }
+                            break;
+
+                        case "L":
+                        if(d[i-1] == "L"){
+                            g.setColor(new Color(45, 100, 0));
+                            g.fillRect(x[i], y[i] + UNIT_REDUCTION, UNIT_SIZE,
+                                    UNIT_SIZE - (2 * UNIT_REDUCTION));
+                            }
+                            else{
+                                g.setColor(new Color(45, 100, 0));
+                                g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
+                                        UNIT_SIZE - (2 * UNIT_REDUCTION));
+                            }
+                            break;
+
+                        case "R":
+                        if(d[i-1] == "R"){
+                        g.setColor(new Color(45, 100, 0));
+                        g.fillRect(x[i], y[i] + UNIT_REDUCTION, UNIT_SIZE,
+                                UNIT_SIZE - (2 * UNIT_REDUCTION));
+                        }
+                        else{
+                            g.setColor(new Color(45, 100, 0));
+                            g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
+                                    UNIT_SIZE - (2 * UNIT_REDUCTION));
+                        }
+                            break;
+                    }
 
                 }
             }
@@ -133,53 +192,38 @@ public class GamePanel extends JPanel implements ActionListener {
             for (int i = bodyParts; i > 0; i--) {
                 x[i] = x[i - 1];
                 y[i] = y[i - 1];
-
+                d[i] = d[i - 1];
             }
 
             switch (direction) {
                 case 'U':
+                    d[0] = "U";
                     y[0] = y[0] - UNIT_SIZE;
                     break;
 
                 case 'D':
+                    d[0] = "D";
                     y[0] = y[0] + UNIT_SIZE;
                     break;
 
                 case 'L':
+                    d[0] = "L";
                     x[0] = x[0] - UNIT_SIZE;
                     break;
 
                 case 'R':
+                    d[0] = "R";
                     x[0] = x[0] + UNIT_SIZE;
                     break;
 
             }
         }
-        // TODO FIXA RESTARTING
-
-        /*
-         * else if(restarting){
-         * for(int i = bodyParts; i>0;i--){
-         * if(i != 0){
-         * x[i] = 0;
-         * y[i] = 0;
-         * }
-         * else if(i ==0){
-         * x[i] = 0;
-         * y[i] = 0;
-         * }
-         * }
-         * 
-         * 
-         * restarting = false;
-         * }
-         */
     }
 
     public void checkApple() {
         if ((x[0] == appleX) && (y[0] == appleY)) {
             // bodyParts++;
-            bodyParts++;
+            bodyParts ++;
             applesEaten++;
             newApple();
         }
@@ -326,7 +370,6 @@ public class GamePanel extends JPanel implements ActionListener {
                     restarting = false;
                     break;
 
-                // TODO - LÖS SÅ ATT "PAUSED" VISAS NÄR SPELET ÄR PAUSAT
                 case KeyEvent.VK_SPACE:
                     if (!paused) {
                         paused = true;
@@ -334,7 +377,6 @@ public class GamePanel extends JPanel implements ActionListener {
                         paused = false;
                     }
                     break;
-
             }
         }
     }
