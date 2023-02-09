@@ -7,7 +7,7 @@ import java.util.Random;
 public class GamePanel extends JPanel implements ActionListener {
     // Skärmhöjd och bredd - standard 600 varje
     static final int SCREEN_WIDTH = 600;
-    static final int SCREEN_HEIGHT = 600; 
+    static final int SCREEN_HEIGHT = 600;
 
     // Storlek på rutor samt utrräkning på hur många
     static final int UNIT_SIZE = 25; // standard 25
@@ -44,7 +44,6 @@ public class GamePanel extends JPanel implements ActionListener {
     Timer timer = new Timer(DELAY, this);
     Random random;
 
-
     GamePanel() {
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -52,7 +51,7 @@ public class GamePanel extends JPanel implements ActionListener {
         // TODO - IMPLEMENTERA EN FUNKTION FÖR ATT KONTINUERLIGT BYTA FÄRG PÅ BAKGRUND
         this.setBackground(Color.black); // standard Color.black
         this.setFocusable(true);
-        this.addKeyListener(new MyKeyAdapter()); 
+        this.addKeyListener(new MyKeyAdapter());
 
         startGame();
     }
@@ -72,19 +71,13 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void draw(Graphics g) {
 
-
-        if (running) {
-            /*
-             * for (int i = 0; i < SCREEN_HEIGHT/UNIT_SIZE; i++) {
-             * g.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, SCREEN_HEIGHT);
-             * g.drawLine(0, i*UNIT_SIZE, SCREEN_WIDTH, i*UNIT_SIZE);
-             * }
-             */
+        if (running) { 
 
             // äpple - standard Color.red
             g.setColor(Color.red);
             g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
 
+            //For-loop för att rita ut de olika kroppsdelarna
             for (int i = 0; i < bodyParts; i++) {
                 // huvud - standard: Color.green
                 if (i == 0) {
@@ -95,71 +88,39 @@ public class GamePanel extends JPanel implements ActionListener {
 
                 // resten av kroppen - standard new Color(45, 100, 0)
                 else {
-                      /* 
-                    g.setColor(new Color(45, 100, 0));
-                    g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
-                            UNIT_SIZE - (2 * UNIT_REDUCTION));
+                    /*
+                     * g.setColor(new Color(45, 100, 0));
+                     * g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 *
+                     * UNIT_REDUCTION),
+                     * UNIT_SIZE - (2 * UNIT_REDUCTION));
+                     */
 
-                    //DEBUGGER - skriver ut alla directions
-                    g.drawString(d[i], x[i], y[i]);
-                    */
-                    switch(d[i]){
+                    // DEBUGGER - skriver ut alla directions
+                    //g.drawString(d[i], x[i], y[i]);
+
+                    g.setColor(new Color(45, 100, 0));
+
+                    //SWITCH som ritaer ut olika former beroende på vilken direction kroppsdelen har
+                    switch (d[i]) {
                         case "U":
-                        if(d[i-1] == "U"){
-                            g.setColor(new Color(45, 100, 0));
-                            g.fillRect(x[i] + UNIT_REDUCTION, y[i], UNIT_SIZE - (2 * UNIT_REDUCTION),
-                                    UNIT_SIZE);
-                            }
-                            else{
-                                g.setColor(new Color(45, 100, 0));
-                                g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
-                                        UNIT_SIZE - (2 * UNIT_REDUCTION));
-                            }
+                            g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2*UNIT_REDUCTION), UNIT_SIZE+(UNIT_SIZE/2)-UNIT_REDUCTION);
                             break;
 
-                        // TODO-fixa denna också på samma sätt som dom andra.
                         case "D":
-                        if(d[i-1] == "D"){
-                            g.setColor(new Color(45, 100, 0));
-                            g.fillRect(x[i], y[i] + UNIT_REDUCTION, UNIT_SIZE,
-                                    UNIT_SIZE - (2 * UNIT_REDUCTION));
-                            }
-                            else{
-                                g.setColor(new Color(45, 100, 0));
-                                g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
-                                        UNIT_SIZE - (2 * UNIT_REDUCTION));
-                            }
+                                g.fillRect(x[i]+UNIT_REDUCTION, y[i]-(UNIT_SIZE/2), UNIT_SIZE-(2*UNIT_REDUCTION), UNIT_SIZE+(UNIT_SIZE/2)-UNIT_REDUCTION);
                             break;
 
                         case "L":
-                        if(d[i-1] == "L"){
-                            g.setColor(new Color(45, 100, 0));
-                            g.fillRect(x[i], y[i] + UNIT_REDUCTION, UNIT_SIZE,
-                                    UNIT_SIZE - (2 * UNIT_REDUCTION));
-                            }
-                            else{
-                                g.setColor(new Color(45, 100, 0));
-                                g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
-                                        UNIT_SIZE - (2 * UNIT_REDUCTION));
-                            }
+                                g.fillRect(x[i]+UNIT_REDUCTION, y[i]+UNIT_REDUCTION, UNIT_SIZE+(UNIT_SIZE/2)-UNIT_REDUCTION, UNIT_SIZE-(2*UNIT_REDUCTION));
                             break;
 
                         case "R":
-                        if(d[i-1] == "R"){
-                        g.setColor(new Color(45, 100, 0));
-                        g.fillRect(x[i], y[i] + UNIT_REDUCTION, UNIT_SIZE,
-                                UNIT_SIZE - (2 * UNIT_REDUCTION));
-                        }
-                        else{
-                            g.setColor(new Color(45, 100, 0));
-                            g.fillRect(x[i] + UNIT_REDUCTION, y[i] + UNIT_REDUCTION, UNIT_SIZE - (2 * UNIT_REDUCTION),
-                                    UNIT_SIZE - (2 * UNIT_REDUCTION));
-                        }
+                                g.fillRect(x[i]-(UNIT_SIZE/2), y[i]+UNIT_REDUCTION, UNIT_SIZE + (UNIT_SIZE/2) - UNIT_REDUCTION, UNIT_SIZE-(2*UNIT_REDUCTION));
                             break;
                     }
-
                 }
             }
+
 
             if (!paused) {
                 scoreString = ("Score: " + Integer.toString(applesEaten));
@@ -167,14 +128,13 @@ public class GamePanel extends JPanel implements ActionListener {
                 scoreString = "PAUSED";
             }
 
-
             g.setColor(Color.gray);
             g.setFont(new Font("Arial", Font.BOLD, 40));
             FontMetrics metrics = getFontMetrics(g.getFont());
             g.drawString(scoreString, (SCREEN_WIDTH - metrics.stringWidth(scoreString)) / 2, g.getFont().getSize()); // Mellanrum
-                                                                                                           // mellan
-                                                                                                           // texten
-        } else{
+            // mellan
+            // texten
+        } else {
             gameOver(g);
         }
 
@@ -223,7 +183,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void checkApple() {
         if ((x[0] == appleX) && (y[0] == appleY)) {
             // bodyParts++;
-            bodyParts ++;
+            bodyParts++;
             applesEaten++;
             newApple();
         }
@@ -300,11 +260,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
         }
 
-        //Sätter huvudet 1 steg före alla andra kroppsdelar
+        // Sätter huvudet 1 steg före alla andra kroppsdelar
         x[0] = UNIT_SIZE;
         y[0] = 0;
         direction = 'R';
-
 
         if (applesEaten >= highScore) {
             highScore = applesEaten;
@@ -318,10 +277,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
         timer = new Timer(DELAY, this);
         timer.start();
-        
+
     }
-
-
 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -330,11 +287,12 @@ public class GamePanel extends JPanel implements ActionListener {
             move();
         }
         checkCollisions();
-            checkApple();
+        checkApple();
         repaint();
 
     }
 
+    // funktion för inputs de olika tangenterna
     public class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
